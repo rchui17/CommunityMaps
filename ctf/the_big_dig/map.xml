@@ -1,6 +1,6 @@
 <map proto="1.5.0" game="Flag Assault">
 <name>The Big Dig</name>
-<version>1.1.0</version>
+<version>1.1.1</version>
 <objective>Score your flag in the enemy goals, most points wins!</objective>
 <created>2022-05-06</created>
 <gamemode>ctf</gamemode>
@@ -90,6 +90,8 @@
 <regions>
     <apply block="never"/>
     <!-- Enter -->
+
+    <apply enter="never" region="oob" message="You may not go out of bounds!"/>
     <apply enter="blue-not-flag" region="blue-spawn" message="You may not enter the opposing team's spawn!"/>
     <apply enter="red-not-flag" region="red-spawn" message="You may not enter the opposing team's spawn!"/>
     <!-- Apply Kits -->
@@ -109,6 +111,10 @@
         <cuboid id="blue-goal-left" min="64,10,-19" max="63,14,-15"/>
         <cuboid id="blue-goal-right" min="64,10,18" max="63,14,22"/>
     </union>
+
+    <!-- Out of bounds -->
+    <above y="17" id="oob"/>
+
     <!-- Spawns regions -->
     <rectangle id="blue-spawn" min="72,-9" max="oo,12"/>
     <rectangle id="red-spawn" min="-71,-9" max="-oo,12"/>
