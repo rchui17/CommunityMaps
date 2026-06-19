@@ -1,7 +1,7 @@
 <map proto="1.5.1">
 <name>Pillars</name>
 <variant id="ffa" world="ffa">FFA</variant>
-<version>1.2.0</version>
+<version>1.2.1</version>
 <objective>Be the last player standing!</objective>
 <gamemode>blitz</gamemode>
 <include id="void-death" />
@@ -80,6 +80,13 @@
     <cylinder id="obs-spawn-point" base="0.5,35,0.5" radius="0" height="1"/>
 </regions>
 <if variant="ffa">
+    <world-borders>
+        <world-border center="0.5,0.5" size="140" when="world_border_active=1" />
+        <world-border center="0.5,0.5" size="30" when="world_border_active=1" duration="3m" />
+    </world-borders>
+    <modes>
+        <mode name="World Border" action="world_border_active := 1" after="5m" show-before="1m" />
+    </modes>
     <structures>
         <structure id="pillar-structure">
             <region>
@@ -95,6 +102,7 @@
         <array id="pillars_angle" size="150" scope="match" />
         <array id="center" size="2" scope="match" />
         <array id="paste_coords" size="2" scope="match" />
+        <variable id="world_border_active" scope="match" />
         <variable id="rings" scope="match" />
         <variable id="ready" scope="match" />
         <variable id="current_ring" scope="match" />
@@ -153,7 +161,7 @@
             </action>
         </trigger>
 
-        <trigger scope="player" filter="all(needs_tp=1,alive)" action="tp-to-spawn" />
+        <trigger scope="player" filter="all(needs_tp=1,alive,ready=1)" action="tp-to-spawn" />
         <trigger scope="player" filter="dead" action="needs_tp := 1" />
 
         <action id="tp-to-spawn" scope="player">
