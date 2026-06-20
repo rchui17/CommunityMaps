@@ -1,6 +1,6 @@
 <map proto="1.5.1" min-server-version="1.21.11">
 <name>Breezebille</name> 
-<version>1.0.1</version>
+<version>1.0.2</version>
 <created>2026-06-17</created>
 <objective>Be the first team to reach 2000 points!</objective>
 <include id="gapple-kill-reward"/>
@@ -104,6 +104,17 @@
         <item material="wind charge" amount="4" />
     </kill-reward>
 </kill-rewards>
+<spawners>
+    <spawner delay="6s">
+        <item material="golden apple" />
+        <spawn-region>
+            <point>111.5,9.5,-198.5</point>
+        </spawn-region>
+        <player-region>
+            <cuboid min="106,9,-193" max="117,13,-204" />
+        </player-region>
+    </spawner>
+</spawners>
 <toolrepair>
     <tool>shield</tool>
     <tool>iron sword</tool>
