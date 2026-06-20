@@ -22,7 +22,7 @@
         <item slot="1" material="bow" unbreakable="true" />
         <item slot="2" material="golden apple" amount="2" />
         <item slot="3" material="iron axe" unbreakable="true" />
-        <item slot="4" material="shield" unbreakable="true" />
+        <item slot="weapon.offhand" material="shield" unbreakable="true" />
         <item slot="7" material="wind charge" amount="8" />
         <item slot="8" material="mace" unbreakable="true">
             <enchantment>wind burst</enchantment>
@@ -52,8 +52,13 @@
         </region>
     </spawn>
 </spawns>
+<filters>
+    <not id="prevent-pot">
+        <material>decorated pot</material>
+    </not>
+</filters>
 <regions>
-    <apply block="never" />
+    <apply block="never" use="prevent-pot" />
 </regions>
 <score>
     <limit>2000</limit>
