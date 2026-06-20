@@ -1,6 +1,6 @@
 <map proto="1.5.1" min-server-version="1.21.11">
 <name>Breezebille</name> 
-<version>1.0</version>
+<version>1.0.1</version>
 <created>2026-06-17</created>
 <objective>Be the first team to reach 2000 points!</objective>
 <include id="gapple-kill-reward"/>
