@@ -1,6 +1,6 @@
 <map proto="1.5.1" min-server-version="1.21.11">
 <name>Breezebille</name> 
-<version>1.0.2</version>
+<version>1.0.3</version>
 <created>2026-06-17</created>
 <objective>Be the first team to reach 2000 points!</objective>
 <include id="gapple-kill-reward"/>
@@ -29,10 +29,10 @@
             <enchantment>density</enchantment>
         </item>
         <item slot="28" material="arrow" amount="8" />
-        <helmet material="leather helmet" team-color="true" unbreakable="true" />
-        <chestplate material="leather chestplate" team-color="true" unbreakable="true" />
-        <leggings material="chainmail leggings" unbreakable="true" />
-        <boots material="iron boots" unbreakable="true" />
+        <helmet material="leather helmet" team-color="true" unbreakable="true" locked="true" />
+        <chestplate material="leather chestplate" team-color="true" unbreakable="true" locked="true" />
+        <leggings material="chainmail leggings" unbreakable="true" locked="true" />
+        <boots material="iron boots" unbreakable="true" locked="true" />
     </kit>
 </kits>
 <spawns>
