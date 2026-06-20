@@ -1,6 +1,6 @@
 <map proto="1.5.1" min-server-version="1.21.11">
 <name>Chaos Theory</name> 
-<version>1.0</version>
+<version>1.0.1</version>
 <created>2026-06-18</created>
 <objective>Destroy the enemy team's core and monuments!</objective>
 <include id="gapple-kill-reward"/>
@@ -58,10 +58,16 @@
         <void/>
     </not>
     <material id="tinted-glass">tinted glass</material>
+    <not id="use">
+        <any>
+            <material>respawn anchor</material>
+        </any>
+    </not>
 </filters>
 <regions>
     <rectangle id="red-base" min="-22,-49" max="-46,-82" />
     <rectangle id="blue-base" min="107,-82" max="131,-49" />
+    <apply use="use" />
     <apply region="red-base" block="never" message="You may not modify this area!" />
     <apply region="red-base" enter="red" message="You may not enter to this area!" />
     <apply region="blue-base" block="never" message="You may not modify this area!" />
@@ -77,7 +83,7 @@
     <trigger scope="match" filter="match-started">
         <action>
             <fill material="moving piston" filter="tinted-glass">
-                <cuboid min="-12,0,-1" max="97,1,-130" />
+                <cuboid min="-12,0,2" max="97,1,-133" />
             </fill>
         </action>
     </trigger>
@@ -185,4 +191,13 @@
 <hunger>
     <depletion>off</depletion>
 </hunger>
+<damage>
+    <deny>
+        <attacker>
+            <holding ignore-durability="true" ignore-metadata="true" ignore-name="true" ignore-enchantments="true">
+                <item material="golden spear" />
+            </holding>
+        </attacker>
+    </deny>
+</damage>
 </map>
