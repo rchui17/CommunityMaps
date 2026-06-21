@@ -1,6 +1,6 @@
 <map proto="1.5.1" min-server-version="1.21.11">
 <name>Breezebille</name> 
-<version>1.0.3</version>
+<version>1.0.4</version>
 <created>2026-06-17</created>
 <objective>Be the first team to reach 2000 points!</objective>
 <include id="gapple-kill-reward"/>
@@ -115,19 +115,21 @@
         </player-region>
     </spawner>
 </spawners>
-<toolrepair>
-    <tool>shield</tool>
-    <tool>iron sword</tool>
-    <tool>bow</tool>
-    <tool>iron axe</tool>
-    <tool>mace</tool>
-</toolrepair>
 <itemremove>
     <item>leather helmet</item>
     <item>leather chestplate</item>
     <item>chainmail leggings</item>
     <item>iron boots</item>
+    <item>wind charge</item>
 </itemremove>
+<itemkeep>
+    <item>shield</item>
+    <item>iron sword</item>
+    <item>bow</item>
+    <item>iron axe</item>
+    <item>mace</item>
+    <item>golden apple</item>
+</itemkeep>
 <damage>
     <deny>
         <cause>fall</cause>
