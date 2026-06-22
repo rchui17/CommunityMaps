@@ -1,6 +1,6 @@
 <map proto="1.5.0" min-server-version="1.21.11">
 <name>Survive or Die: Oracle</name>
-<version>0.2.1</version>
+<version>0.2.2</version>
 <objective>Destroy the other team's monument!</objective>
 <created>2026-01-01</created>
 <include id="void-death"/>
@@ -25,7 +25,7 @@
         <item slot="2" material="copper shovel" unbreakable="true">
             <enchantment level="2">efficiency</enchantment>
         </item>
-        <item slot="3" material="wool" amount="24" team-color="true"/>
+        <item slot="3" material="wool" amount="32" team-color="true"/>
         <item slot="7" material="compass"/>
         <item slot="8" amount="1" material="beetroot" name="`eHeal Beet" components="max_stack_size=3,rarity='uncommon',food={can_always_eat:true,nutrition:2,saturation:0.6f},consumable={on_consume_effects:[{type:'minecraft:apply_effects',effects:[{show_icon:true,duration:1,id:'minecraft:instant_health'}]}]}"/>
         <helmet material="leather helmet" unbreakable="true" team-color="true"/>
@@ -44,7 +44,7 @@
         <game-mode>adventure</game-mode>
     </kit>
     <kit id="wool" repair-tools="true" deduct-tools="false" deduct-items="false">
-        <item amount="12" material="white wool" team-color="true"/>
+        <item amount="16" material="white wool" team-color="true"/>
     </kit>
     <kit id="snowball" repair-tools="true" deduct-tools="false" deduct-items="false">
         <item amount="3" material="snowball"/>
@@ -663,8 +663,8 @@
     <constant id="tileOffsetZ">13</constant>
     <constant id="gridOriginX">-6</constant>
     <constant id="gridOriginZ">-6</constant>
-    <constant id="maxHeartBeat">45</constant>
-    <constant id="recoveryHeartBeat">45</constant>
+    <constant id="maxHeartBeat">60</constant>
+    <constant id="recoveryHeartBeat">60</constant>
 </constants>
 <variables scope="match">
     <cuboid id="spawnable" min="0,4,0" max="0,9,0"/>
