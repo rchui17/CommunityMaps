@@ -1,8 +1,11 @@
 <map proto="1.5.0" min-server-version="1.21.11">
 <name>Survive or Die: Oracle</name>
-<version>0.2.2</version>
-<objective>Destroy the other team's monument!</objective>
+<version>0.2.3</version>
+<objective>Be the last player standing!</objective>
 <created>2026-01-01</created>
+<gamemode>ffa</gamemode>
+<gamemode>blitz</gamemode>
+<gamemode>arcade</gamemode>
 <include id="void-death"/>
 <authors>
     <author uuid="f690a591-348b-482e-a18d-7779d0c0a28c"/> <!-- mitchiii -->
@@ -10,7 +13,7 @@
 </authors>
 <players max="32" colors="true"/>
 <spawns>
-    <spawn kit="tutorial-kit" region="spawnable" angle="0,12,0" spread="true" safe="true" outdoors="true"/>
+    <spawn kit="all-kits" region="spawnable" angle="0,12,0" spread="true" safe="true" outdoors="true" filter="spawn-delay"/>
     <default yaw="135">
         <regions>
             <cuboid min="-1,39,-1" max="1,39,1"/>
@@ -18,7 +21,8 @@
     </default>
 </spawns>
 <kits>
-    <kit id="spawn-kit" force="true">
+    <kit id="all-kits" parents="spawn-kit,tutorial-kit"/>
+    <kit id="spawn-kit" filter="game_phase=2.." force="true">
         <clear effects="true"/>
         <item slot="0" material="copper sword" unbreakable="true"/>
         <item slot="1" material="copper pickaxe" unbreakable="true"/>
@@ -32,12 +36,14 @@
         <chestplate material="chainmail chestplate" unbreakable="true"/>
         <leggings material="leather leggings" unbreakable="true" team-color="true"/>
         <boots unbreakable="true" material="iron boots"/>
+    </kit>
+    <kit id="reset-tutorial-kit" parents="spawn-kit" filter="game_phase=2.." force="true">
         <game-mode>survival</game-mode>
         <walk-speed>1</walk-speed>
         <attribute operation="base" amount="1">jump_strength</attribute>
     </kit>
-    <kit id="tutorial-kit" force="true">
-    <effect duration="15s" amplifier="0">darkness</effect>
+    <kit id="tutorial-kit" filter="game_phase=1" force="true">
+        <effect duration="15s" amplifier="0">darkness</effect>
         <effect duration="oo" amplifier="255">resistance</effect>
         <attribute operation="base" amount="-1">jump_strength</attribute>
         <walk-speed>0</walk-speed>
@@ -140,7 +146,7 @@
     </kit>
 </kits>
 <projectiles>
-    <projectile id="throwable-fireball" name="fireball" projectile="LargeFireball" velocity=".6" click="right" power="3.5" damage="1" cooldown="1s" destroy-filter="always"/>
+    <projectile id="throwable-fireball" name="fireball" projectile="LargeFireball" velocity=".6" click="right" damage="6" cooldown="1s" destroy-filter="always"/>
 </projectiles>
 <tnt>
     <instantignite>on</instantignite>
@@ -237,13 +243,27 @@
 <score/>
 <blitz>
     <broadcastLives>false</broadcastLives>
+    <filter>
+        <any>
+            <variable var="game_phase">3</variable>
+            <variable var="health">..2</variable> <!--Based on a respawn time of 2s -->
+        </any>
+    </filter>
 </blitz>
+<respawn auto="true"/>
 <filters>
+    <time id="spawn-delay">0.1s</time>
+    <pulse id="constant-pulse-filter" period="0.1s" duration="0.05s" filter="game_phase=2.."/>
     <pulse id="heart-beat" period="1s" duration="0.1s" filter="health=1.."/>
     <all id="in-tutorial">
         <participating/>
         <match-started/>
         <variable var="game_phase">1</variable>
+    </all>
+    <all id="blitz-mode-trigger">
+        <filter id="players=..${suddenDeathPlayerCap}"/>
+        <variable var="game_phase">2</variable>
+        <match-running/>
     </all>
     <carrying id="carrying-shears">
         <item material="shears"/>
@@ -665,6 +685,7 @@
     <constant id="gridOriginZ">-6</constant>
     <constant id="maxHeartBeat">60</constant>
     <constant id="recoveryHeartBeat">60</constant>
+    <constant id="suddenDeathPlayerCap">6</constant>
 </constants>
 <variables scope="match">
     <cuboid id="spawnable" min="0,4,0" max="0,9,0"/>
@@ -874,16 +895,32 @@
             </action>
         </repeat>
     </action>
+    <action id="enable-blitz-mode" scope="match">
+        <sound key="block.trial_spawner.ominous_activate" pitch="1" volume="100"/>
+        <sound key="entity.warden.death" pitch="0.7" volume="100"/>
+        <sound key="entity.warden.sonic_boom" pitch="2" volume="100"/>
+        <set var="game_phase" value="3"/>
+        <message text="`8`l---===---"/>
+        <message text="`aBlitz Enabled: `c`lLast Life`7!" actionbar="aBlitz Enabled: `c`lLast Life`7!"/>
+        <message text="`8`l---===---"/>
+    </action>
+    <trigger scope="match" action="enable-blitz-mode">
+        <filter>
+                <after duration="15s" message="Blitz Enabled in: {0}"><all><filter id="blitz-mode-trigger"/></all></after>
+        </filter>
+    </trigger>
     <trigger scope="player" filter="all(match-started,participating)">
         <action>
             <set var="game_phase" value="1"/>
-            <message title="`lTutorial" subtitle="`7-=| `6Welcome to survive or die: `boracle`7! |=-"/>
+            <schedule after="0.2s">
+                <message title="`lTutorial" subtitle="`7-=| `6Welcome to survive or die: `boracle`7! |=-"/>
+            </schedule>
             <schedule after="4s">
-                <message fade-in="0s" stay="6s" title="`lTutorial" subtitle="`8`l- `7Every second your `axp meter `7ticks down. If it reaches `czero `7you `cinstantly die`7! `8`l-"/>
+                <message fade-in="0s" stay="6s" title="`lTutorial" subtitle="`8`l- `7Every second your `axp meter `7ticks down. If it reaches `czero `7you `cdie permanently`7! `8`l-"/>
                 <sound preset="alert" volume="0.75" pitch="1"/>
             </schedule>
             <schedule after="10s">
-                <message fade-in="0s" stay="5s" title="`lTutorial" subtitle="`8`l- `dKill enemy players `7or find `6time powerups `7to refill your `axp meter`7. `8`l-"/>
+                <message fade-in="0s" stay="5s" title="`lTutorial" subtitle="`8`l- `dKill enemy players `7to refill your `axp meter`7. Also `cSniffer eggs `7contain loot.`8`l-"/>
                 <sound preset="alert" volume="0.75" pitch="1"/>
             </schedule>
             <schedule after="15s">
@@ -906,7 +943,7 @@
                 <message fade-in="0s" title="`a`l`oGo`7`l`o!"/>
                 <sound preset="alert" volume="0.75" pitch="2"/>
                 <set var="game_phase" value="2"/>
-                <kit id="spawn-kit"/>
+                <kit id="reset-tutorial-kit"/>
             </schedule>
         </action>
     </trigger>
@@ -927,7 +964,7 @@
         <message actionbar="`8[`610s `aExtra time added`8]"/>
     </action>
     <trigger scope="player" filter="heart-beat">
-        <action filter="game_phase = 2">
+        <action filter="game_phase = 2..">
             <set var="health" value="health - 1"/>
             <sound key="entity.warden.heartbeat"/>
             <schedule after="0.5s" filter="all(participating, player.exp_progress=..0.2)">
@@ -939,6 +976,14 @@
                     <effect amplifier="100">instant damage</effect>
                 </kit>
             </action>
+        </action>
+    </trigger>
+    <trigger scope="match" filter="constant-pulse-filter">
+        <action>
+            <set var="players" value="0"/>
+            <switch-scope inner="player" filter="participating">
+                <set var="players" value="players+1"/>
+            </switch-scope>              
         </action>
     </trigger>
     <trigger scope="match" filter="match-started">
