@@ -1,7 +1,7 @@
 <map proto="1.5.0">
 <name>Mame, I Shrunk the PvPers</name>
 <variant id="halloween" world="halloween" override="true">Mame, I Shrunk the Goblins</variant>
-<version>1.2.10</version>
+<version>1.2.11</version>
 <include id="gapple-kill-reward"/>
 <objective>Capture both of the enemy's wools, and buy upgrades from the villagers to help you do so!</objective>
 <if variant="default">
@@ -629,7 +629,7 @@
         </category>
         <category id="weapons" name="`aWeapons" material="gold sword">
             <item material="diamond sword" unbreakable="true" amount="1" price="16" currency="gold nugget" kit="diamond-sword-kit"/>
-            <item material="stick" name="`rKnockback Stick" enchantment="knockback:1" amount="1" price="6" currency="gold nugget"/>
+            <item material="stick" name="`rKnockback Stick" enchantment="knockback:1" amount="1" price="64" currency="gold nugget" lore="`cThis item will disappear upon death!" />
             <item material="arrow" amount="16" price="1" currency="gold nugget"/>
             <item material="bow" unbreakable="true" enchantment="power:1" name="`rPower Bow" amount="1" price="12" currency="gold nugget" kit="powerbow"/>
             <item material="bow" unbreakable="true" enchantment="power:1;infinity" name="`rPower &amp; Infinity Bow" amount="1" price="24" currency="gold nugget" kit="powerinfinitybow"/>
@@ -884,7 +884,6 @@
     <item>diamond sword</item>
     <item>shears</item>
     <item>bow</item>
-    <item>stick</item>
 </itemkeep>
 <armorkeep>
     <item>leather helmet</item>
