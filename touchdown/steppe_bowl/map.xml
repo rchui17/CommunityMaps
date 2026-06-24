@@ -1,6 +1,6 @@
 <map proto="1.5.1">
 <name>Steppe Bowl</name>
-<version>1.0</version>
+<version>1.0.1</version>
 <created>2026-06-24</created>
 <constants>
     <constant id="team-flag-posts">true</constant>
