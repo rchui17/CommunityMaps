@@ -1,8 +1,8 @@
 <map proto="1.5.0">
 <name>Rat Revolution</name>
-<version>1.1.0</version>
+<version>1.1.1</version>
 <phase>staging</phase>
-<objective>Get the most kills in 6 minutes!</objective>
+<objective>Get the most kills in 8 minutes!</objective>
 <created>2025-11-02</created>
 <gamemode>ffa</gamemode>
 <include id="gapple-kill-reward"/>
@@ -12,8 +12,8 @@
 <contributors>
     <contributor uuid="63ddf58a-ba2c-4d39-8481-6358bb46c63a" contribution="xml"/> <!-- samschaap -->
 </contributors>
-<players max="24"/>
-<time>6m</time>
+<players max="20"/>
+<time>8m</time>
 <score>
     <kills>1</kills>
 </score>
