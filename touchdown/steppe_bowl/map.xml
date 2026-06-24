@@ -5,8 +5,8 @@
 <constants>
     <constant id="team-flag-posts">true</constant>
     <constant id="team-size">8</constant>
-    <constant id="team-one-name">Blue</constant>
-    <constant id="team-two-name">Red</constant>
+    <constant id="team-one-name">Blue Sky</constant>
+    <constant id="team-two-name">Golden Horde</constant>
     <constant id="team-one-color">blue</constant>
     <constant id="team-two-color">red</constant>
     <constant id="team-one-spawn">0.5,18,-57.5</constant>
