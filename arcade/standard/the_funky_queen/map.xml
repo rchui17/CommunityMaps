@@ -1,6 +1,6 @@
 <map proto="1.5.0">
 <name>The Funky Queen</name>
-<version>1.1.2</version>
+<version>1.1.3</version>
 <objective>Be the best funky player, and become the Queen of Funky!</objective>
 <created>2025-09-29</created>
 <phase>development</phase>
@@ -1863,7 +1863,7 @@
         <mob type="Blaze"/>
     </spawner>
     <spawner spawn-region="mobarena-spawner-extra-4" player-region="everywhere" min-delay="5s" max-delay="10s" filter="all(round-playing,playing-mobarena)">
-        <mob type="Blaze" health="100" max-health="99"/>
+        <mob type="Blaze"/>
     </spawner>
     <spawner spawn-region="race-spawner-1" player-region="race-neg-z" max-entities="1" delay="3s" filter="all(playing-race,round-playing)">
         <item material="web" amount="3"/>
@@ -4668,9 +4668,6 @@
             <set var="score" value="hidden_score"/>
         </switch-scope>
     </action>
-    <action id="enable-glass-bridge" scope="match" expose="true">
-        <set var="played_minigames" index="${MG_GLASS_BRIDGE}-1" value="0"/>
-    </action>
     <action id="select-random-minigame" scope="match">
         <set var="roulette_spinning_i" value="1"/>
         <set var="current_minigame" value="-1"/>
@@ -6933,11 +6930,6 @@
         </action>
     </trigger>
     <trigger action="score := 0" filter="round-preparing" scope="player"/>
-    <trigger filter="match-started" scope="match">
-        <action>
-            <set var="played_minigames" index="${MG_GLASS_BRIDGE}-1" value="1"/>
-        </action>
-    </trigger>
     <trigger scope="match">
         <filter>
             <after duration="5s" message="Teleporting to minigame in {0}" filter="all(game-selecting,game_was_announced=1)"/>
