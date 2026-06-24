@@ -1,6 +1,6 @@
 <map proto="1.5.0">
 <name>The Funky Queen</name>
-<version>1.1.1</version>
+<version>1.1.2</version>
 <objective>Be the best funky player, and become the Queen of Funky!</objective>
 <created>2025-09-29</created>
 <phase>development</phase>
@@ -1863,7 +1863,7 @@
         <mob type="Blaze"/>
     </spawner>
     <spawner spawn-region="mobarena-spawner-extra-4" player-region="everywhere" min-delay="5s" max-delay="10s" filter="all(round-playing,playing-mobarena)">
-        <mob type="Blaze"/>
+        <mob type="Blaze" health="100" max-health="99"/>
     </spawner>
     <spawner spawn-region="race-spawner-1" player-region="race-neg-z" max-entities="1" delay="3s" filter="all(playing-race,round-playing)">
         <item material="web" amount="3"/>
@@ -2984,6 +2984,8 @@
     <variable id="gb_platform_found" scope="player"/>
     <variable id="gb_has_finished" scope="player"/>
     <variable id="gb_has_started" scope="player"/>
+    <variable id="gb_final_position" scope="player"/>
+    <variable id="gb_last_position"/>
     <variable id="gb_current_platform" scope="player" default="-1"/>
     <variable id="gb_i_p" scope="player"/>
     <variable id="gb_p_p" scope="player"/>
@@ -3978,11 +3980,11 @@
             <set var="tip_toe_x" value="tip_toe_current - (8 * tip_toe_z)"/>
 
             <!-- <fill region="tip_toe_cursor_2" material="air"/>
-<set var="tip_toe_cursor_2" index="0" value="-390 + 6 * tip_toe_z"/>
-<set var="tip_toe_cursor_2" index="2" value="-148 - 6 * tip_toe_x"/>
-<set var="tip_toe_cursor_2" index="3" value="-385 + 6 * tip_toe_z"/>
-<set var="tip_toe_cursor_2" index="5" value="-143 - 6 * tip_toe_x"/>
-<fill region="tip_toe_cursor_2" material="stained clay:4"/> -->
+        <set var="tip_toe_cursor_2" index="0" value="-390 + 6 * tip_toe_z"/>
+        <set var="tip_toe_cursor_2" index="2" value="-148 - 6 * tip_toe_x"/>
+        <set var="tip_toe_cursor_2" index="3" value="-385 + 6 * tip_toe_z"/>
+        <set var="tip_toe_cursor_2" index="5" value="-143 - 6 * tip_toe_x"/>
+        <fill region="tip_toe_cursor_2" material="stained clay:4"/> -->
 
             <!-- select random neighbor -->
             <!-- south -->
@@ -4086,10 +4088,10 @@
 
             <!-- <fill region="tip_toe_cursor" material="air"/> -->
             <!-- <set var="tip_toe_cursor" index="0" value="-390 + 6 * tip_toe_z"/>
-<set var="tip_toe_cursor" index="2" value="-148 - 6 * tip_toe_x"/>
-<set var="tip_toe_cursor" index="3" value="-385 + 6 * tip_toe_z"/>
-<set var="tip_toe_cursor" index="5" value="-143 - 6 * tip_toe_x"/>
-<fill region="tip_toe_cursor" material="stained clay:4"/> -->
+        <set var="tip_toe_cursor" index="2" value="-148 - 6 * tip_toe_x"/>
+        <set var="tip_toe_cursor" index="3" value="-385 + 6 * tip_toe_z"/>
+        <set var="tip_toe_cursor" index="5" value="-143 - 6 * tip_toe_x"/>
+        <fill region="tip_toe_cursor" material="stained clay:4"/> -->
 
             <set var="tip_toe_can_visit_n" value="0"/>
             <set var="tip_toe_can_visit_s" value="0"/>
@@ -4220,10 +4222,10 @@
                 <fill region="tip_toe_cursor" material="stained clay"/>
 
                 <!-- <message text="DRAWING: {0}">
-        <replacements>
-            <decimal id="0" value="tip_toe_stack[tip_toe_i]"/>
-        </replacements>
-    </message> -->
+                <replacements>
+                    <decimal id="0" value="tip_toe_stack[tip_toe_i]"/>
+                </replacements>
+            </message> -->
 
                 <set var="tip_toe_i" value="tip_toe_i + 1"/>
                 <set var="tip_toe_calc" value="tip_toe_stack[tip_toe_i + 1]"/>
@@ -5131,6 +5133,20 @@
     </trigger>
     <trigger filter="all(round-playing,playing-glass-bridge,ap,lost=0,gb_should_lose=0,gb_has_finished=0,glass-bridge-finish-line,gb_has_started=1)" scope="player">
         <action>
+            <set var="gb_final_position" value="gb_last_position + 1"/>
+            <set var="gb_last_position" value="gb_final_position"/>
+
+            <message actionbar="`a`l+{p} `f{word}">
+                <replacements>
+                    <decimal id="p" value="players - (gb_last_position - 1)"/>
+                    <switch id="word" value="players - (gb_last_position - 1)">
+                        <case match="1" result="Point"/>
+                        <fallback>Points</fallback>
+                    </switch>
+                </replacements>
+            </message>
+            <set var="score" value="players - (gb_last_position - 1)"/>
+
             <kit id="spectator-kit"/>
             <set var="score" value="score + 5"/>
             <set var="gb_someone_finished" value="1"/>
