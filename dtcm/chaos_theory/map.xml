@@ -1,6 +1,6 @@
 <map proto="1.5.1" min-server-version="1.21.11">
 <name>Chaos Theory</name> 
-<version>1.0.1</version>
+<version>1.0.2</version>
 <created>2026-06-18</created>
 <objective>Destroy the enemy team's core and monuments!</objective>
 <include id="gapple-kill-reward"/>
@@ -78,6 +78,7 @@
         </region>
     </apply>
 </regions>
+<maxbuildheight>36</maxbuildheight>
 <actions>
     <!-- clear void glass -->
     <trigger scope="match" filter="match-started">
