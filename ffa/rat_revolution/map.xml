@@ -1,6 +1,6 @@
 <map proto="1.5.0">
 <name>Rat Revolution</name>
-<version>1.1.1</version>
+<version>1.1.2</version>
 <phase>staging</phase>
 <objective>Get the most kills in 8 minutes!</objective>
 <created>2025-11-02</created>
@@ -32,6 +32,23 @@
         <boots unbreakable="true" locked="true" material="iron boots"/>
         <effect duration="3s" amplifier="255">damage resistance</effect>
     </kit>
+    <kit id="secret-kit">
+        <action>
+            <replace-item>
+                <find material="stone sword" unbreakable="true"/>
+                <replace material="iron axe" unbreakable="true"/>
+            </replace-item>
+            <replace-item>
+                <find material="bow" unbreakable="true"/>
+                <replace material="fishing rod" unbreakable="true"/>
+            </replace-item>
+            <replace-item>
+                <find material="leather chestplate" unbreakable="true" locked="true" color="7F7F7F"/>
+                <replace material="leather chestplate" unbreakable="true" locked="true" color="A559F2"/>
+            </replace-item>
+        </action>
+    </kit>
+    <give kit="secret-kit" filter="secret-point"/>
 </kits>
 <spawns>
     <default yaw="180">
@@ -80,6 +97,21 @@
             <point yaw="-90">6.5,3,65.5</point>
             <point yaw="180">-18.5,13,74.5</point>
             <point yaw="180">29.5,14,73.5</point>
+            <point yaw="180">34.5,21,75.5</point>
+            <point yaw="-90">7.5,14,59.5</point>
+            <point yaw="-135">-16.5,17,72.5</point>
+            <point yaw="-90">-14.5,18,35.5</point>
+            <point yaw="0">-12.5,19,27.5</point>
+            <point yaw="90">-9.5,19,4.5</point>
+            <point yaw="0">58.5,17,32.5</point>
+            <point yaw="-90">70.5,25,4.5</point>
+            <point yaw="-90">70.5,22,4.5</point>
+            <point yaw="-135">3.5,17,44.5</point>
+            <point yaw="-180">52.5,2,22.5</point>
+            <point yaw="0">52.5,5,-1.5</point>
+            <point yaw="90">73.5,5,15.5</point>
+            <point yaw="-90">32.5,5,15.5</point>
+            <point yaw="45">23.5,9,23.5</point>
         </regions>
     </spawn>
 </spawns>
@@ -92,6 +124,7 @@
     </all>
 </filters>
 <regions>
+    <cylinder id="secret-point" base="23.5,9,23.5" radius="1" height="1"/>
     <apply block="allow-some"/>
 </regions>
 <toolrepair>
@@ -116,6 +149,8 @@
     <item>mossy cobblestone</item>
     <item>carpet</item>
     <item>step</item>
+    <item>iron axe</item>
+    <item>fishing rod</item>
 </itemremove>
 <itemkeep>
     <item>arrow</item>
@@ -128,13 +163,13 @@
     </kill-reward>
     <kill-reward>
         <filter>
-            <kill-streak count="3" repeat="true"/>
+            <kill-streak count="2" repeat="true"/>
         </filter>
         <item material="snow ball" name="`cGrenade" grenade="true"/>
     </kill-reward>
 </kill-rewards>
 <broadcasts>
-    <tip after="10s" every="2m">After `e3`r kills, you will receive 1 `cGrenade`r!</tip>
+    <tip after="10s" every="2m">After `e2`r kills, you will receive 1 `cGrenade`r!</tip>
 </broadcasts>
 <hunger>
     <depletion>off</depletion>
