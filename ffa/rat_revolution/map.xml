@@ -1,6 +1,6 @@
 <map proto="1.5.0">
 <name>Rat Revolution</name>
-<version>1.1.3</version>
+<version>1.1.4</version>
 <phase>staging</phase>
 <objective>Get the most kills in 8 minutes!</objective>
 <created>2025-11-02</created>
@@ -53,10 +53,10 @@
         </action>
     </kit>
     <kit id="3-killstreak-kit" force="true">
-        <head name="Rat" uuid="61699b2e-d327-4a01-9f1e-0ea8c3f06bc6" slot="slot.armor.head" locked="true">
-            <skin>ewogICJ0aW1lc3RhbXAiIDogMTc4Mjg5MzkyOTEwMywKICAicHJvZmlsZUlkIiA6ICI5MDczN2E1N2RlYjk0MWYxYTEyMzE1MmJkZmZjMTBmYiIsCiAgInByb2ZpbGVOYW1lIiA6ICJNaW5lU2tpbl8xNCIsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS83ZWI5MjgwMDIzOGZmOWIyNTI3NDExZTlkYjUwNTcwNmZiNDk1ZWRiNGFhODk5MDUwOTczZDc0ZTk5MGVkMzE0IgogICAgfQogIH0KfQ==</skin>
+        <head name="Rat" uuid="853c80ef-3c37-49fd-aa49-938b674adae6" slot="slot.armor.head" locked="true">
+            <skin>eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTI4ZjlhNDNlNzE5YWQwNjljZmJjZDhhOTg5MTRmMWMxYTE4ZTFkZjI0NzU5ZDYzM2Q1YTg0OGE2YjkzNTliMyJ9fX0=</skin>
         </head>
-        <effect duration="10s">speed</effect>
+        <effect duration="20s">speed</effect>
     </kit>
     <give kit="secret-kit" filter="secret-point"/>
 </kits>
@@ -131,6 +131,9 @@
         <not>
             <cause>explosion</cause>
         </not>
+        <not>
+            <material>painting</material>
+        </not>
     </all>
     <not id="not-carrying-axe">
         <carrying ignore-metadata="true">
@@ -178,7 +181,7 @@
     </kill-reward>
     <kill-reward>
         <filter>
-            <kill-streak count="2" repeat="true"/>
+            <kill-streak min="3"/>
         </filter>
         <item material="snow ball" name="`cGrenade" grenade-power="1.2" grenade="true"/>
     </kill-reward>
@@ -190,7 +193,7 @@
     </kill-reward>
 </kill-rewards>
 <broadcasts>
-    <tip after="10s" every="2m">After `e2`r kills, you will receive 1 `cGrenade`r!</tip>
+    <tip after="10s" every="2m">After `e3`r kills, you will receive 1 `cGrenade`r for every kill!</tip>
 </broadcasts>
 <hunger>
     <depletion>off</depletion>
