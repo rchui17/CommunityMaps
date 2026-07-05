@@ -1,6 +1,6 @@
 <map proto="1.5.0">
 <name>Haunted Cruiser</name>
-<version>1.0.2</version>
+<version>1.0.3</version>
 <objective>Get the most kills in 12 minutes!</objective>
 <created>2026-04-13</created>
 <include id="gapple-kill-reward"/>
@@ -113,6 +113,7 @@
             <match-running/>
         </after>
     </pulse>
+    <material id="barrier">barrier</material>
 </filters>
 <actions>
     <trigger filter="lever-1-after-5-seconds" scope="match">
@@ -208,6 +209,18 @@
     <trigger filter="trigger-thunder-sound" scope="match">
         <action>
             <sound key="${entity.lightning_bolt.thunder}"/>
+        </action>
+    </trigger>
+    <!-- remove zombie cages and set thunder -->
+    <trigger scope="match" filter="always">
+        <action>
+            <weather state="thunder" />
+            <fill material="air" filter="barrier">
+                <cuboid min="15,24,45" max="13,25,42" />
+                <cuboid min="-8,30,-28" max="-6,31,-25" />
+                <cuboid min="9,30,30" max="7,31,26" />
+                <cuboid min="-14,24,-44" max="-12,25,-41" />
+            </fill>
         </action>
     </trigger>
 </actions>
