@@ -1,6 +1,6 @@
 <map proto="1.5.0">
 <name>War of the Acres</name>
-<version>1.0.2</version>
+<version>1.0.3</version>
 <phase>staging</phase>
 <created>2025-12-14</created>
 <objective>Capture the enemy team's wools!</objective>
@@ -14,7 +14,8 @@
     <contributor uuid="63ddf58a-ba2c-4d39-8481-6358bb46c63a" contribution="xml"/> <!-- samschaap -->
 </contributors>
 <broadcasts>
-    <tip after="5s" every="3m">You can only go to the other teams bases by using the portals at the sides of your frontline!</tip>
+    <tip after="5s" every="3m">Use the `5portals`r to go to the enemy team's bases!</tip>
+    <tip after="7s" every="3m">You can find the portals on the `asides`r of your island!</tip>
 </broadcasts>
 <teams>
     <team id="red-team" color="dark red" max="16">Red</team>
@@ -37,7 +38,7 @@
         <leggings unbreakable="true" enchantment="protection projectile" material="chainmail leggings"/>
         <boots team-color="true" unbreakable="true" material="leather boots"/>
         <kit id="resistance-kit">
-            <effect duration="3s" amplifier="255">damage resistance</effect>
+            <effect duration="4s" amplifier="255">damage resistance</effect>
         </kit>
     </kit>
 </kits>
@@ -64,13 +65,41 @@
         </regions>
     </default>
 </spawns>
+<variables>
+    <variable id="can_cross_yellow" scope="player" default="0"/>
+    <variable id="can_cross_blue" scope="player" default="0"/>
+    <variable id="can_cross_red" scope="player" default="0"/>
+</variables>
 <filters>
     <material id="only-web">web</material>
     <all id="only-iron-renew">
         <material id="only-iron">iron block</material>
         <cause>world</cause>
     </all>
+    <any id="can-cross-yellow-return">
+        <variable var="can_cross_yellow">1</variable>
+        <team>blue-team</team>
+        <team>red-team</team>
+    </any>
+    <any id="can-cross-blue-return">
+        <variable var="can_cross_blue">1</variable>
+        <team>yellow-team</team>
+        <team>red-team</team>
+    </any>
+    <any id="can-cross-red-return">
+        <variable var="can_cross_red">1</variable>
+        <team>yellow-team</team>
+        <team>blue-team</team>
+    </any>
 </filters>
+<actions>
+    <trigger filter="yellow-portal-destinations" action="can_cross_yellow := 1" scope="player"/>
+    <trigger filter="yellow-island" action="can_cross_yellow := 0" scope="player"/>
+    <trigger filter="blue-portal-destinations" action="can_cross_blue := 1" scope="player"/>
+    <trigger filter="blue-island" action="can_cross_blue := 0" scope="player"/>
+    <trigger filter="red-portal-destinations" action="can_cross_red := 1" scope="player"/>
+    <trigger filter="red-island" action="can_cross_red := 0" scope="player"/>
+</actions>
 <regions>
     <negative id="void-area">
         <union id="return-bridges">
@@ -85,6 +114,11 @@
         <rectangle id="yellow-spawn" min="-104,-68" max="-71,-36"/>
         <translate id="blue-spawn" offset="0,0,-203" region="yellow-spawn"/>
         <translate id="red-spawn" offset="0,0,203" region="yellow-spawn"/>
+    </union>
+    <union id="team-islands">
+        <rectangle id="yellow-island" min="-140,-136" max="-126,-57"/>
+        <translate id="blue-island" offset="0,0,-203" region="yellow-island"/>
+        <translate id="red-island" offset="0,0,203" region="yellow-island"/>
     </union>
     <union id="woolrooms">
         <rectangle id="yellow-woolroom" min="-53,-83" max="-34,-110"/>
@@ -115,12 +149,18 @@
     </union>
     <!-- Portal destination protection -->
     <union id="portal-destinations">
-        <rectangle id="yellow-from-red" min="-195,-131" max="-185,-121"/>
-        <rectangle id="yellow-from-blue" min="-195,-62" max="-185,-72"/>
-        <translate id="blue-from-red" offset="0,0,-203" region="yellow-from-blue"/>
-        <translate id="blue-from-yellow" offset="0,0,-203" region="yellow-from-red"/>
-        <translate id="red-from-yellow" offset="0,0,203" region="yellow-from-blue"/>
-        <translate id="red-from-blue" offset="0,0,203" region="yellow-from-red"/>
+        <union id="yellow-portal-destinations">
+            <rectangle id="yellow-from-red" min="-195,-131" max="-185,-121"/>
+            <rectangle id="yellow-from-blue" min="-195,-62" max="-185,-72"/>
+        </union>
+        <union id="blue-portal-destinations">
+            <translate id="blue-from-red" offset="0,0,-203" region="yellow-from-blue"/>
+            <translate id="blue-from-yellow" offset="0,0,-203" region="yellow-from-red"/>
+        </union>
+        <union id="red-portal-destinations">
+            <translate id="red-from-yellow" offset="0,0,203" region="yellow-from-blue"/>
+            <translate id="red-from-blue" offset="0,0,203" region="yellow-from-red"/>
+        </union>
     </union>
     <!-- Wool spawns -->
     <point id="yellow-wool-spawn">-42,13,-97</point>
@@ -130,6 +170,9 @@
     <apply enter="deny(yellow-team)" region="yellow-woolroom" message="You may not enter your own wool room!"/>
     <apply enter="deny(blue-team)" region="blue-woolroom" message="You may not enter your own wool room!"/>
     <apply enter="deny(red-team)" region="red-woolroom" message="You may not enter your own wool room!"/>
+    <apply enter="can-cross-yellow-return" region="yellow-return-bridge" message="You may only enter your own frontline when returning from other bases!"/>
+    <apply enter="can-cross-blue-return" region="blue-return-bridge" message="You may only enter your own frontline when returning from other bases!"/>
+    <apply enter="can-cross-red-return" region="red-return-bridge" message="You may only enter your own frontline when returning from other bases!"/>
     <apply enter="yellow-team" region="yellow-spawn" message="You may not enter the enemy team's spawn!"/>
     <apply enter="blue-team" region="blue-spawn" message="You may not enter the enemy team's spawn!"/>
     <apply enter="red-team" region="red-spawn" message="You may not enter the enemy team's spawn!"/>
