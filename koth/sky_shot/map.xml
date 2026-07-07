@@ -1,6 +1,6 @@
 <map proto="1.5.0">
 <name>Sky Shot</name>
-<version>1.1.10</version>
+<version>1.1.11</version>
 <include id="gapple-kill-reward"/>
 <objective>Control the hills to score points for your team</objective>
 <gamemode>koth</gamemode>
@@ -18,11 +18,11 @@
         <clear/>
         <item slot="0" material="stone sword" unbreakable="true"/>
         <item slot="1" material="bow" unbreakable="true"/>
-        <item slot="2" material="water bucket"/>
-        <item slot="3" material="golden apple"/>
+        <item slot="3" material="shears" unbreakable="true"/>
         <item slot="4" material="leaves" damage="3" amount="64"/>
-        <item slot="8" material="glass" amount="16"/>
-        <item slot="5" material="shears" unbreakable="true"/>
+        <item slot="5" material="glass" amount="16"/>
+        <item slot="7" material="water bucket"/>
+        <item slot="8" material="golden apple"/>
         <item slot="28" material="arrow" amount="16"/>
         <helmet material="leather helmet" team-color="true" locked="true" unbreakable="true"/>
         <chestplate material="leather chestplate" team-color="true" locked="true" unbreakable="true"/>
@@ -131,6 +131,7 @@
 <toolrepair>
     <tool>stone sword</tool>
     <tool>bow</tool>
+    <tool>shears</tool>
 </toolrepair>
 <itemremove>
     <item>leather helmet</item>
@@ -141,15 +142,20 @@
 <itemkeep>
     <item>golden apple</item>
     <item>arrow</item>
+    <item>leaves</item>
+    <item>glass</item>
+    <item>bucket</item>
+    <item>water bucket</item>
 </itemkeep>
 <maxbuildheight>45</maxbuildheight>
 <kill-rewards>
     <kill-reward>
         <item material="arrow" amount="8"/>
+        <item material="leaves" damage="3" amount="16"/>
+        <item material="glass" amount="4"/>
     </kill-reward>
 </kill-rewards>
 <hunger>
     <depletion>off</depletion>
 </hunger>
-<respawn delay="1s"/>
 </map>
