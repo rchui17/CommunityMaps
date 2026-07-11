@@ -17,7 +17,7 @@
                                         \/
 -->
 <name>The Grand Dueling Tournament II</name>
-<version>3.2.0</version>
+<version>3.3.0</version>
 <objective>Defeat opposing teams in The Grand ${tournament-type} Tournament!</objective>
 <phase>staging</phase>
 <variant id="default" world="duel"/>
@@ -1097,6 +1097,7 @@
     <material id="wool">wool</material>
     <material id="arena-spawn-box-material">stained glass:0</material>
     <variable id="reward-gapple" var="current_kill_reward_includes_gapple">1</variable>
+    <variable id="old-kit-same-as-new-kit" scope="match" value="kits[current_round - 1] - current_kit">0</variable>
     <any id="clearable-entities">
         <entity>dropped item</entity>
         <entity>arrow</entity>
@@ -1669,6 +1670,7 @@
         <if constant="kit-count" constant-value="14.." constant-comparison="range"><case match="13" result="${kit-13-name}"/></if>
     </switch>
     <decimal id="current-kit-number" scope="match" value="current_kit"/>
+    <decimal id="current-kit-code" scope="match" value="100 + current_kit"/>
     <switch id="round-1-kit-display" scope="match" value="(bound(abs(kits[0] - current_kit), 0, 1) + 1) % 2">
         <case match="0" result="[_]"/>
         <case match="1" result="`a[1]"/>
@@ -2007,10 +2009,10 @@
         <set var="current_kit" value="0"/>
         <repeat times="${kit-count}">
             <message>
-                <text>{"text": "","extra":[{"text":" {r1} ","clickEvent":{"action":"run_command","value":"/action trigger set-round-1-kit-{num}"},"hoverEvent":{"action":"show_text","contents":{"text":"Set `3Round 1 `b${kit-noun} to {kit}","color":"aqua"}},"color":"aqua"},{"text":"{r2} ","clickEvent":{"action":"run_command","value":"/action trigger set-round-2-kit-{num}"},"hoverEvent":{"action":"show_text","contents":{"text":"Set `3Round 2 `b${kit-noun} to {kit}","color":"aqua"}},"color":"aqua"},{"text":"{r3}","clickEvent":{"action":"run_command","value":"/action trigger set-round-3-kit-{num}"},"hoverEvent":{"action":"show_text","contents":{"text":"Set `3Round 3 `b${kit-noun} to {kit}","color":"aqua"}},"color":"aqua"},{"text":" : {kit}"}],"color":"white"}</text>
+                <text>{"text": "","extra":[{"text":" {r1} ","clickEvent":{"action":"run_command","value":"/variable set ptemp 1{num}"},"hoverEvent":{"action":"show_text","contents":{"text":"Set `3Round 1 `b${kit-noun} to {kit}","color":"aqua"}},"color":"aqua"},{"text":"{r2} ","clickEvent":{"action":"run_command","value":"/variable set ptemp 2{num}"},"hoverEvent":{"action":"show_text","contents":{"text":"Set `3Round 2 `b${kit-noun} to {kit}","color":"aqua"}},"color":"aqua"},{"text":"{r3}","clickEvent":{"action":"run_command","value":"/variable set ptemp 3{num}"},"hoverEvent":{"action":"show_text","contents":{"text":"Set `3Round 3 `b${kit-noun} to {kit}","color":"aqua"}},"color":"aqua"},{"text":" : {kit}"}],"color":"white"}</text>
                 <replacements>
                     <replacement id="kit">current-kit-name</replacement>
-                    <replacement id="num">current-kit-number</replacement>
+                    <replacement id="num">current-kit-code</replacement>
                     <replacement id="r1">round-1-kit-display</replacement>
                     <replacement id="r2">round-2-kit-display</replacement>
                     <replacement id="r3">round-3-kit-display</replacement>
@@ -2037,256 +2039,24 @@
             </replacements>
         </message>
     </action>
-    <action id="set-kit-console-selection" scope="player" filter="not(match-started)">
-        <switch-scope inner="match">
-            <set var="kits" index="current_round - 1" value="current_kit"/>
-            <message text="`7[`6${host-title}`7] `6${host-name}`r: The ${kit-noun} for round {round} has been set to {kit}`r!">
-                <replacements>
-                    <decimal id="round" value="current_round"/>
-                    <replacement id="kit">current-kit-name</replacement>
-                </replacements>
-            </message>
-        </switch-scope>
-        <action id="kit-console"/>
-    </action>
-    <if constant="kit-count" constant-value="1.." constant-comparison="range">
-        <action id="set-round-1-kit-0" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="1"/>
-            <set var="current_kit" value="0"/>
-            <action id="set-kit-console-selection"/>
+    <trigger scope="player" observers="true" filter="all(not(match-started), not(ptemp=0))">
+        <action>
+            <!-- mad that didn't think of this before pablo... saves to many lines -->
+            <set var="current_round" value="floor(ptemp / 1000)"/>
+            <set var="current_kit" value="(ptemp - 100) % 1000"/>
+            <switch-scope inner="match" filter="not(old-kit-same-as-new-kit)">
+                <set var="kits" index="current_round - 1" value="current_kit"/>
+                <message text="`7[`6${host-title}`7] `6${host-name}`r: The ${kit-noun} for round {round} has been set to {kit}`r!">
+                    <replacements>
+                        <decimal id="round" value="current_round"/>
+                        <replacement id="kit">current-kit-name</replacement>
+                    </replacements>
+                </message>
+            </switch-scope>
+            <set var="ptemp" value="0"/>
+            <action id="kit-console"/>
         </action>
-        <action id="set-round-2-kit-0" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="2"/>
-            <set var="current_kit" value="0"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-        <action id="set-round-3-kit-0" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="3"/>
-            <set var="current_kit" value="0"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-    </if>
-    <if constant="kit-count" constant-value="2.." constant-comparison="range">
-        <action id="set-round-1-kit-1" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="1"/>
-            <set var="current_kit" value="1"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-        <action id="set-round-2-kit-1" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="2"/>
-            <set var="current_kit" value="1"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-        <action id="set-round-3-kit-1" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="3"/>
-            <set var="current_kit" value="1"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-    </if>
-    <if constant="kit-count" constant-value="3.." constant-comparison="range">
-        <action id="set-round-1-kit-2" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="1"/>
-            <set var="current_kit" value="2"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-        <action id="set-round-2-kit-2" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="2"/>
-            <set var="current_kit" value="2"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-        <action id="set-round-3-kit-2" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="3"/>
-            <set var="current_kit" value="2"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-    </if>
-    <if constant="kit-count" constant-value="4.." constant-comparison="range">
-        <action id="set-round-1-kit-3" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="1"/>
-            <set var="current_kit" value="3"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-        <action id="set-round-2-kit-3" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="2"/>
-            <set var="current_kit" value="3"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-        <action id="set-round-3-kit-3" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="3"/>
-            <set var="current_kit" value="3"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-    </if>
-    <if constant="kit-count" constant-value="5.." constant-comparison="range">
-        <action id="set-round-1-kit-4" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="1"/>
-            <set var="current_kit" value="4"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-        <action id="set-round-2-kit-4" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="2"/>
-            <set var="current_kit" value="4"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-        <action id="set-round-3-kit-4" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="3"/>
-            <set var="current_kit" value="4"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-    </if>
-    <if constant="kit-count" constant-value="6.." constant-comparison="range">
-        <action id="set-round-1-kit-5" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="1"/>
-            <set var="current_kit" value="5"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-        <action id="set-round-2-kit-5" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="2"/>
-            <set var="current_kit" value="5"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-        <action id="set-round-3-kit-5" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="3"/>
-            <set var="current_kit" value="5"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-    </if>
-    <if constant="kit-count" constant-value="7.." constant-comparison="range">
-        <action id="set-round-1-kit-6" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="1"/>
-            <set var="current_kit" value="6"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-        <action id="set-round-2-kit-6" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="2"/>
-            <set var="current_kit" value="6"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-        <action id="set-round-3-kit-6" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="3"/>
-            <set var="current_kit" value="6"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-    </if>
-    <if constant="kit-count" constant-value="8.." constant-comparison="range">
-        <action id="set-round-1-kit-7" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="1"/>
-            <set var="current_kit" value="7"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-        <action id="set-round-2-kit-7" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="2"/>
-            <set var="current_kit" value="7"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-        <action id="set-round-3-kit-7" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="3"/>
-            <set var="current_kit" value="7"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-    </if>
-    <if constant="kit-count" constant-value="9.." constant-comparison="range">
-        <action id="set-round-1-kit-8" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="1"/>
-            <set var="current_kit" value="8"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-        <action id="set-round-2-kit-8" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="2"/>
-            <set var="current_kit" value="8"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-        <action id="set-round-3-kit-8" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="3"/>
-            <set var="current_kit" value="8"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-    </if>
-    <if constant="kit-count" constant-value="10.." constant-comparison="range">
-        <action id="set-round-1-kit-9" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="1"/>
-            <set var="current_kit" value="9"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-        <action id="set-round-2-kit-9" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="2"/>
-            <set var="current_kit" value="9"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-        <action id="set-round-3-kit-9" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="3"/>
-            <set var="current_kit" value="9"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-    </if>
-    <if constant="kit-count" constant-value="11.." constant-comparison="range">
-        <action id="set-round-1-kit-10" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="1"/>
-            <set var="current_kit" value="10"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-        <action id="set-round-2-kit-10" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="2"/>
-            <set var="current_kit" value="10"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-        <action id="set-round-3-kit-10" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="3"/>
-            <set var="current_kit" value="10"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-    </if>
-    <if constant="kit-count" constant-value="12.." constant-comparison="range">
-        <action id="set-round-1-kit-11" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="1"/>
-            <set var="current_kit" value="11"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-        <action id="set-round-2-kit-11" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="2"/>
-            <set var="current_kit" value="11"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-        <action id="set-round-3-kit-11" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="3"/>
-            <set var="current_kit" value="11"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-    </if>
-    <if constant="kit-count" constant-value="13.." constant-comparison="range">
-        <action id="set-round-1-kit-12" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="1"/>
-            <set var="current_kit" value="12"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-        <action id="set-round-2-kit-12" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="2"/>
-            <set var="current_kit" value="12"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-        <action id="set-round-3-kit-12" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="3"/>
-            <set var="current_kit" value="12"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-    </if>
-    <if constant="kit-count" constant-value="14.." constant-comparison="range">
-        <action id="set-round-1-kit-13" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="1"/>
-            <set var="current_kit" value="13"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-        <action id="set-round-2-kit-13" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="2"/>
-            <set var="current_kit" value="13"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-        <action id="set-round-3-kit-13" scope="player" expose="true" filter="not(match-started)">
-            <set var="current_round" value="3"/>
-            <set var="current_kit" value="13"/>
-            <action id="set-kit-console-selection"/>
-        </action>
-    </if>
+    </trigger>
     <action id="toggle-intro" scope="player" expose="true" filter="not(match-started)">
         <set var="state" value="1 - state"/>
         <action id="kit-console"/>
