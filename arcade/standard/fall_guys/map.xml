@@ -1,7 +1,7 @@
 <map proto="1.5.0">
 <game>Progress</game>
 <name>Fall Guys</name>
-<version>1.0.7</version>
+<version>1.0.8</version>
 <created>2022-08-08</created>
 <objective>Be the first to finish the parkour!</objective>
 <authors>
@@ -122,6 +122,26 @@
 <actions>
     <fill id="open-spawn-cage" region="spawn-cage-exit" material="air" filter="only-stained-glass"/>
     <trigger filter="after-10s" action="open-spawn-cage" scope="match"/>
+    <!-- fill redstone dust -->
+    <trigger scope="match" filter="match-started">
+        <action>
+            <fill material="redstone wire" update="true">
+                <block>24.5,14,123.5</block>
+                <block>-5.5,20,138.5</block>
+                <block>60.5,34,55.5</block>
+                <block>82.5,31,2.5</block>
+                <block>117.5,38,65.5</block>
+                <block>25.5,42,139.5</block>
+                <block>29.5,42,137.5</block>
+                <block>35.5,39,137.5</block>
+                <block>31.5,39,139.5</block>
+                <block>34.5,39,115.5</block>
+                <block>10.5,62,138.5</block>
+                <block>7.5,62,138.5</block>
+                <block>7.5,84,142.5</block>
+            </fill>
+        </action>
+    </trigger>
 </actions>
 <score>
     <limit>5</limit>
