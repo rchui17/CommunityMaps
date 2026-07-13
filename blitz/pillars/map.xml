@@ -1,7 +1,7 @@
 <map proto="1.5.1">
 <name>Pillars</name>
 <variant id="ffa" world="ffa">FFA</variant>
-<version>1.2.1</version>
+<version>1.2.2</version>
 <objective>Be the last player standing!</objective>
 <gamemode>blitz</gamemode>
 <include id="void-death" />
@@ -43,7 +43,12 @@
     </teams>
 </unless>
 <blitz>
-    <lives>2</lives>
+    <if variant="ffa">
+        <lives>1</lives>
+    </if>
+    <unless variant="ffa">
+        <lives>3</lives>
+    </unless>
 </blitz>
 <time>10m</time>
 <kits>
@@ -80,10 +85,6 @@
     <cylinder id="obs-spawn-point" base="0.5,35,0.5" radius="0" height="1"/>
 </regions>
 <if variant="ffa">
-    <world-borders>
-        <world-border center="0.5,0.5" size="140" when="world_border_active=1" />
-        <world-border center="0.5,0.5" size="30" when="world_border_active=1" duration="3m" />
-    </world-borders>
     <modes>
         <mode name="World Border" action="world_border_active := 1" after="5m" show-before="1m" />
     </modes>
