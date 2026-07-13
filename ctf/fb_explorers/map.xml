@@ -2,7 +2,7 @@
 <name>FB: Explorers</name>
 <variant id="comp" override="true">FB: Tournament Explorers</variant>
 <version>1.0.0</version>
-<phase>development</phase>
+<phase>staging</phase>
 <created>2026-06-17</created>
 <constants>
     <constant id="team-size">6</constant>
