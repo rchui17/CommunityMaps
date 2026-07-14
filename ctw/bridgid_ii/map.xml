@@ -4,6 +4,7 @@
 <objective>Capture the enemies' wools!</objective>
 <gamemode>ctw</gamemode>
 <created>2026-07-12</created>
+<phase>development</phase>
 <include id="gapple-kill-reward"/>
 <include id="iron-bulkcrafting"/>
 <include id="water-lanes"/>
