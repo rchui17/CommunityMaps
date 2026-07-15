@@ -1,5 +1,5 @@
 <map proto="1.5.1">
-<version>1.0.0</version>
+<version>1.0.1</version>
 <name>Strange Dreams I</name>
 <objective>Destroy the enemy's monument to win!</objective>
 <created>2026-07-11</created>
@@ -13,7 +13,7 @@
     <contributor uuid="ca25df12-cc0b-4812-a85b-7aa134561f88" contribution="Feedback"/> <!-- eunsoule -->
 </contributors>
 <constants>
-    <constant id="eff.modes-preset">every-10m</constant>
+    <constant id="eff.modes-preset">every-5m</constant>
     <constant id="eff.efficiency-tool">diamond pickaxe</constant>
     <constant id="eff.team-1">blue</constant>
     <constant id="eff.team-2">red</constant>
@@ -37,6 +37,7 @@
 </broadcasts>
 <kits>
     <kit id="default-kit">
+        <clear/>
         <item slot="0" material="iron sword" unbreakable="true"/>
         <item slot="1" material="bow" unbreakable="true"/>
         <item slot="2" material="diamond pickaxe" unbreakable="true"/>
@@ -51,6 +52,7 @@
         <chestplate team-color="true" material="leather chestplate" unbreakable="true"/>
         <leggings team-color="true" material="leather leggings" unbreakable="true"/>
         <boots team-color="true" material="leather boots" unbreakable="true"/>
+        <effect duration="3s" amplifier="10">damage resistance</effect>
     </kit>
 </kits>
 <spawns>
@@ -86,8 +88,8 @@
     <apply block="never" region="outside-gameplay-area" message="You may not build outside the map!"/>
 </regions>
 <destroyables>
-    <destroyable name="Monument" required="true" materials="obsidian" owner="red" show-progress="true" repairable="false"  region="red-monument"/>
-    <destroyable name="Monument" required="true" materials="obsidian" owner="blue" show-progress="true" repairable="false"  region="blue-monument"/>
+    <destroyable name="Monument" required="true" materials="obsidian" owner="red" show-progress="true" repairable="false" region="red-monument"/>
+    <destroyable name="Monument" required="true" materials="obsidian" owner="blue" show-progress="true" repairable="false" region="blue-monument"/>
 </destroyables>
 <shops>
     <shop id="butcher-shop" name="`8`lJack Ketch">
@@ -235,15 +237,16 @@
     </kill-reward>
 </kill-rewards>
 <itemkeep>
+    <item>wood</item>
+    <item>glass</item>
     <item>golden apple</item>
     <item>arrow</item>
+    <item>cooked beef</item>
 </itemkeep>
 <itemremove>
     <item>leather boots</item>
     <item>leather chestplate</item>
     <item>leather leggings</item>
-    <item>glass</item>
-    <item>dark oak planks</item>
     <item>obsidian</item>
     <item>tnt</item>
 </itemremove>
@@ -255,6 +258,7 @@
     <tool>iron shovel</tool>
 </toolrepair>
 <gamerules>
+    <doFireTick>false</doFireTick>
     <randomTickSpeed>0</randomTickSpeed>
 </gamerules>
 <respawn delay="3s"/>
